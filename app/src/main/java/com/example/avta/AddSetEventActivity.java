@@ -1,18 +1,19 @@
 package com.example.avta;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -35,15 +36,40 @@ public class AddSetEventActivity extends AppCompatActivity {
 
         // Set date/time formatters
         Locale locale = getResources().getConfiguration().getLocales().get(0);
-        dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM, YYYY", locale);
+        dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM YYYY", locale);
         timeFormat = DateTimeFormatter.ofPattern("hh:mm a", locale);
 
         // Set start and end date
-        currentDate = LocalDateTime.now();
+        currentDate = LocalDateTime.now().withNano(0).withSecond(0);
         startDate = currentDate;
         endDate = startDate.plusMinutes(30);
 
+        // Change title text
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Add Set Event");
+        }
+
         updateDateTimeDisplay();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_add_set_event, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.complete_button) {
+            Intent intent = new Intent();
+            intent.putExtra("startDate", startDate);
+            intent.putExtra("endDate", endDate);
+            setResult(RESULT_OK, intent);
+
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void updateDateTimeDisplay() {

@@ -21,9 +21,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
+import java.time.LocalDateTime;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+
+    private static final int ADD_SET_EVENT_ACTIVITY_REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +39,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
                 Intent intent = new Intent(getBaseContext(), AddSetEventActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, ADD_SET_EVENT_ACTIVITY_REQUEST_CODE);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -67,5 +69,18 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_SET_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            LocalDateTime startDate = (LocalDateTime) data.getSerializableExtra("startDate");
+            LocalDateTime endDate = (LocalDateTime) data.getSerializableExtra("endDate");
+            System.out.println(startDate);
+            System.out.println(endDate);
+            System.out.println("QOWEJFOI");
+        }
     }
 }
