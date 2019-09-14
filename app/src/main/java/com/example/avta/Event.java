@@ -1,6 +1,6 @@
 package com.example.avta;
 
-
+import net.fortuna.ical4j.model.*;
 import java.time.LocalDateTime;
 
 public class Event {
@@ -25,6 +25,8 @@ public class Event {
     public LocalDateTime getEnd () {
         return this.end;
     }
+
+    
 
 
 }

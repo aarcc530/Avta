@@ -1,9 +1,6 @@
 package com.example.avta;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
+import java.time.*;
 import java.time.Duration;
 
 public class SetEvent extends Event {
