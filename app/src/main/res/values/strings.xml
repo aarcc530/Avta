@@ -20,4 +20,6 @@
     <string name="edit_scheduled_event_name">Name</string>
     <string name="edit_schedule_event_description">Description</string>
     <string name="select_date_time">Set start and end time</string>
+    <string name="menu_start_time">Start</string>
+    <string name="menu_end_time">End</string>
 </resources>
