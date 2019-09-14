@@ -14,6 +14,9 @@ public class MovableEvent extends Event {
         this.dueDate = dueDate;
         this.enjoyLevel = enjoyLevel;
     }
-
+    public void setStartEnd (LocalDateTime start, LocalDateTime end) {
+        this.start = start;
+        this.end = end;
+    }
 
 }
