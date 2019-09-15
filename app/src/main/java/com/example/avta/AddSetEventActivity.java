@@ -89,13 +89,12 @@ public class AddSetEventActivity extends AppCompatActivity {
                 }
             }
 
+            SetEvent e = new SetEvent(((EditText) findViewById(R.id.nameInput)).getText().toString(),
+                    ((EditText) findViewById(R.id.descInput)).getText().toString(),
+                    startDate, endDate);
+
             Intent intent = new Intent();
-            intent.putExtra("startDate", startDate);
-            intent.putExtra("endDate", endDate);
-            intent.putExtra("name",
-                    ((EditText) findViewById(R.id.nameInput)).getText().toString());
-            intent.putExtra("description",
-                    ((EditText) findViewById(R.id.descInput)).getText().toString());
+            intent.putExtra("event", e);
             setResult(RESULT_OK, intent);
 
             finish();

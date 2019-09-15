@@ -1,6 +1,5 @@
 package com.example.avta;
 
-import net.fortuna.ical4j.model.*;
 import android.os.Parcel;
 import android.os.Parcelable;
 

@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
 
     private static final int ADD_SET_EVENT_ACTIVITY_REQUEST_CODE = 0;
+    private static final int ADD_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE = 1;
 
     private ArrayList<Event> events;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +49,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, ADD_SET_EVENT_ACTIVITY_REQUEST_CODE);
             }
         });
+
+        FloatingActionButton fab2 = findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), AddMovableEventActivity.class);
+                startActivityForResult(intent, ADD_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -82,12 +94,11 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ADD_SET_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            LocalDateTime startDate = (LocalDateTime) data.getSerializableExtra("startDate");
-            LocalDateTime endDate = (LocalDateTime) data.getSerializableExtra("endDate");
-            String name = data.getStringExtra("name");
-            String desc = data.getStringExtra("description");
-
-            SetEvent e = new SetEvent(name, desc, startDate, endDate);
+            SetEvent e = data.getParcelableExtra("event");
+            events.add(e);
+        }
+        else if (requestCode == ADD_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            MovableEvent e = data.getParcelableExtra("event");
             events.add(e);
         }
     }
