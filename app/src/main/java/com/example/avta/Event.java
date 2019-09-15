@@ -6,12 +6,21 @@ import android.os.Parcelable;
 
 import java.time.LocalDateTime;
 
-public class Event implements Parcelable {
+public class Event implements Parcelable, Comparable<Event> {
     private String name;
     private long length;
     private String subject;
     private LocalDateTime start;
     private LocalDateTime end;
+
+    public int compareTo (Event other) {
+        if (this.end.isBefore(other.getStart()))
+            return 0;
+        else if (this.start.isAfter(other.getEnd()))
+            return 1;
+        else
+            return -1;
+    }
 
     String getEventName() {
         return this.name;
