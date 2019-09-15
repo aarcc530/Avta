@@ -113,7 +113,9 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == ADD_SET_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             SetEvent e = data.getParcelableExtra("event");
             events.add(e);
-
+            events = ScheduleAlgorithm.algorithm(events);
+            if (movableEventListFragment != null)
+                movableEventListFragment.notifyAdapter();
             if (setEventListFragment != null)
                 setEventListFragment.notifyAdapter();
         }
@@ -121,8 +123,11 @@ public class MainActivity extends AppCompatActivity
             MovableEvent e = data.getParcelableExtra("event");
             events.add(e);
 
+            events = ScheduleAlgorithm.algorithm(events);
             if (movableEventListFragment != null)
                 movableEventListFragment.notifyAdapter();
+            if (setEventListFragment != null)
+                setEventListFragment.notifyAdapter();
         }
     }
 }

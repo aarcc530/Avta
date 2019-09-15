@@ -11,17 +11,17 @@ public class ScheduleAlgorithm {
 
     public static ArrayList<Event> algorithm (ArrayList<Event> events) {
         //Initialize internal variables
-        Event[] schedule = null;
-        ArrayList<MovableEvent> nonSetEvents = null;
-        ArrayList<Event> scheduleWorking = null;
-        ArrayList<LocalDateTime[]> freeTime = null;
+        ArrayList<MovableEvent> nonSetEvents = new ArrayList<>();
+        ArrayList<Event> scheduleWorking = new ArrayList<>();
+        ArrayList<LocalDateTime[]> freeTime = new ArrayList<>();
 
         //Separates Set Events and Movable Events into where they should be
         for (Event i : events) {
             if (i instanceof SetEvent)
                 scheduleWorking.add(i);
-            else if (i instanceof MovableEvent)
+            else if (i instanceof MovableEvent){
                 nonSetEvents.add((MovableEvent) i);
+                System.out.println("qwerty"); }
         }
 
         //Sorts them in their required ways
@@ -29,10 +29,9 @@ public class ScheduleAlgorithm {
         Collections.sort(nonSetEvents); //by due date
 
         //Removes any set events not in the next week
-        Iterator itr = scheduleWorking.iterator();
+        Iterator<Event> itr = scheduleWorking.iterator();
         while (itr.hasNext()) {
-            int x = (int) itr.next();
-            if (scheduleWorking.get(x).getStart().isAfter(LocalDateTime.now().plusWeeks(1)))
+            if (itr.next().getStart().isAfter(LocalDateTime.now().plusWeeks(1)))
                 itr.remove();
         }
 
@@ -49,14 +48,17 @@ public class ScheduleAlgorithm {
                 }
             }
             //creates the time between the other set events as free time (with a 10 minute gap, and making sure there it is at least 10 minutes of free time)
-            if (Duration.between(scheduleWorking.get(i).getEnd().plusMinutes(5), scheduleWorking.get(i+1).getStart().minusMinutes(5)).toMinutes() < 10)
+            if (scheduleWorking.size() != 1 && i != scheduleWorking.size()-1) {
+                if (Duration.between(scheduleWorking.get(i).getEnd().plusMinutes(5), scheduleWorking.get(i + 1).getStart().minusMinutes(5)).toMinutes() < 10)
+                    continue;
+                if (i < scheduleWorking.size() - 1) {
+                    temp[0] = scheduleWorking.get(i).getEnd().plusMinutes(5);
+                    temp[1] = scheduleWorking.get(i + 1).getStart().minusMinutes(5);
+                }
                 continue;
-            if (i < scheduleWorking.size()-1) {
-                temp[0] = scheduleWorking.get(i).getEnd().plusMinutes(5);
-                temp[1] = scheduleWorking.get(i+1).getStart().minusMinutes(5);
             }
             //Sets the gap between the last one and the end of the week, should it exist
-            else if (scheduleWorking.get(i).getEnd().isBefore(LocalDateTime.now().plusWeeks(1))) {
+            if (scheduleWorking.get(i).getEnd().isBefore(LocalDateTime.now().plusWeeks(1))) {
                 temp[0] = scheduleWorking.get(i).getEnd().plusMinutes(5);
                 temp[1] = LocalDateTime.now().plusWeeks(1);
             }
@@ -70,12 +72,14 @@ public class ScheduleAlgorithm {
 
         //fits the earliest in queue it an into free time and takes away that free time
         while ((nonSetEvents.size()!= 0) &&( freeTime.size() != 0)) { //if out of free time or set events, it ends
+            System.out.println("asdf");
             for (int i = 0; i < nonSetEvents.size(); i++){ //goes through the events to fit the earliest in queue
                 if (freeTime.size() == 0) //Another check since it hasnt gone though the while loop yet, and the while loop ends after break
                     break;
                 if (nonSetEvents.get(i).getLength() <= Duration.between(freeTime.get(0)[0], freeTime.get(0)[1]).toMinutes()) { //if it fits, it has a starting and ending time taken away
                     MovableEvent temp = nonSetEvents.get(i);
                     temp.setStartEnd(freeTime.get(0)[0], freeTime.get(0)[0].plusMinutes(temp.getLength()));
+                    System.out.println("zxcv " + temp.getEventName());
                     scheduleWorking.add(temp);
                     nonSetEvents.remove(i);
                     LocalDateTime[] temp2 = freeTime.get(0);
@@ -95,7 +99,8 @@ public class ScheduleAlgorithm {
 
 
         //Final formatting and return
-
+        for (Event e : scheduleWorking)
+            System.out.println(e.getEventName());
         return scheduleWorking;
     }
 }

@@ -108,7 +108,7 @@ public class AddMovableEventActivity extends AppCompatActivity implements TimeDu
                 return super.onOptionsItemSelected(item);
             }
 
-            MovableEvent e = new MovableEvent(name, duration,
+            MovableEvent e = new MovableEvent(name, duration / 1000 / 60,
                     ((EditText) findViewById(R.id.subjectInput)).getText().toString().trim(),
                     LocalDateTime.MAX, seekBar.getProgress());
 
