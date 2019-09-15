@@ -65,7 +65,7 @@ public class MovableEventAdapter extends RecyclerView.Adapter<MovableEventAdapte
             return;
         }
 
-        Event listItem = events.get(position);
+        MovableEvent listItem = (MovableEvent) events.get(position);
         holder.event = listItem;
 
         holder.itemView.setVisibility(View.VISIBLE);
@@ -85,6 +85,7 @@ public class MovableEventAdapter extends RecyclerView.Adapter<MovableEventAdapte
                             listItem.getStart().format(timeFormatter),
                             listItem.getEnd().format(timeFormatter),
                             listItem.getStart().format(dateFormatter))
+                            + "\nDue " + listItem.getDueDate().format(dateFormatter)
             );
         }
         else {
@@ -92,7 +93,9 @@ public class MovableEventAdapter extends RecyclerView.Adapter<MovableEventAdapte
                     context.getApplicationContext().getString(
                             R.string.event_list_time_different_day,
                             listItem.getStart().format(fullFormatter),
-                            listItem.getEnd().format(fullFormatter)).replace("\\n", "\n")
+                            listItem.getEnd().format(fullFormatter))
+                            .replace("\\n", "\n")
+                            + "\nDue " + listItem.getDueDate().format(dateFormatter)
             );
         }
     }

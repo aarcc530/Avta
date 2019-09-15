@@ -28,8 +28,9 @@
     <string name="select_duration">%02dH %02dM</string>
     <string name="menu_start_time">Start</string>
     <string name="menu_end_time">End</string>
+    <string name="menu_due_date">Due Date</string>
     <string name="menu_approx_duration">Duration</string>
-    <string name="enjoyment_selector_text">%1$d / %2$d</string>
+    <string name="enjoyment_selector_text">%d / %d</string>
     <string name="menu_enjoyment">Enjoyment</string>
     <string name="event_list_time_different_day">%s\\n%s</string>
     <string name="event_list_time_same_day">%s - %s %s</string>

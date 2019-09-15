@@ -3,6 +3,7 @@ package com.example.avta;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -17,13 +19,18 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 
 public class AddMovableEventActivity extends AppCompatActivity implements TimeDurationPickerCallback {
     private SeekBar seekBar;
     private TextView textView;
-    private EditText durationInput;
+    private EditText durationInput, dueDateInput;
     private long duration;
+    private LocalDateTime dueDate, currentDate;
+    private DateTimeFormatter dateFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +71,20 @@ public class AddMovableEventActivity extends AppCompatActivity implements TimeDu
         if (actionBar != null) {
             actionBar.setTitle("Add Movable Event");
         }
+
+        // Due date
+        Locale locale = getResources().getConfiguration().getLocales().get(0);
+        dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM YYYY", locale);
+        dueDateInput = findViewById(R.id.dueDateInput);
+
+        currentDate = LocalDateTime.now().withNano(0).withSecond(0);
+        dueDate = currentDate;
+
+        updateDueDate();
+    }
+
+    public void updateDueDate() {
+        dueDateInput.setText(dateFormat.format(dueDate));
     }
 
     public void updateDuration(long duration) {
@@ -111,7 +132,7 @@ public class AddMovableEventActivity extends AppCompatActivity implements TimeDu
 
             MovableEvent e = new MovableEvent(name, duration / 1000 / 60,
                     ((EditText) findViewById(R.id.subjectInput)).getText().toString().trim(),
-                    LocalDateTime.MAX, seekBar.getProgress());
+                    dueDate, seekBar.getProgress());
 
             Intent intent = new Intent();
             intent.putExtra("event", e);
@@ -124,5 +145,24 @@ public class AddMovableEventActivity extends AppCompatActivity implements TimeDu
 
     public void enterApproxTime(View view) {
         new PickerDialogFragment().show(getFragmentManager(), "dialog");
+    }
+
+    public void selectDueDate(View view) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        dueDate = dueDate.withYear(year)
+                                .withMonth(month + 1)
+                                .withDayOfMonth(dayOfMonth);
+
+                        updateDueDate();
+                    }
+                }, dueDate.getYear(), dueDate.getMonthValue() - 1, dueDate.getDayOfMonth());
+
+        datePickerDialog.getDatePicker()
+                .setMinDate(currentDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+
+        datePickerDialog.show();
     }
 }
