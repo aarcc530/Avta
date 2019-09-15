@@ -9,6 +9,9 @@ class SetEvent extends Event implements Parcelable {
     SetEvent (String name, String subject, LocalDateTime start, LocalDateTime end) {
         super(name, Duration.between(start, end).toMinutes(), subject, start, end);
     }
+    protected  SetEvent () {
+
+    }
 
     protected SetEvent(Parcel in) {
         super(in.readString(),

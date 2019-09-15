@@ -8,6 +8,10 @@ public class MovableEvent extends Event implements Parcelable {
     private LocalDateTime dueDate;
     private int enjoyLevel;
 
+    public MovableEvent () {
+        
+    }
+
     public MovableEvent (String name, long length, String subject, LocalDateTime dueDate, int enjoyLevel) {
         super(name, length, subject, LocalDateTime.MAX, LocalDateTime.MAX);
         this.dueDate = dueDate;

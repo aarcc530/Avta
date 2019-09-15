@@ -18,6 +18,10 @@ public class Event implements Parcelable, Comparable<Event>, WeekViewDisplayable
     private LocalDateTime start;
     private LocalDateTime end;
 
+    public Event () {
+
+    }
+
     public int compareTo (Event other) {
         if (this.end.isBefore(other.getStart()))
             return -1;
