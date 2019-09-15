@@ -1,9 +1,9 @@
 package com.example.avta;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
@@ -21,9 +21,16 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+
+    private static final int ADD_SET_EVENT_ACTIVITY_REQUEST_CODE = 0;
+
+    private ArrayList<Event> events;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getBaseContext(), AddSetEventActivity.class);
+                intent.putParcelableArrayListExtra("events", events);
+                startActivityForResult(intent, ADD_SET_EVENT_ACTIVITY_REQUEST_CODE);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -51,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        events = new ArrayList<>();
     }
 
     @Override
@@ -65,5 +75,20 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_SET_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            LocalDateTime startDate = (LocalDateTime) data.getSerializableExtra("startDate");
+            LocalDateTime endDate = (LocalDateTime) data.getSerializableExtra("endDate");
+            String name = data.getStringExtra("name");
+            String desc = data.getStringExtra("description");
+
+            SetEvent e = new SetEvent(name, desc, startDate, endDate);
+            events.add(e);
+        }
     }
 }

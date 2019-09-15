@@ -13,4 +13,16 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+
+    <string name="title_activity_add_task">AddTaskActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="edit_scheduled_event_name">Name</string>
+    <string name="edit_schedule_event_description">Description</string>
+    <string name="select_date_time">Set start and end time</string>
+    <string name="title_activity_add_movable_event">AddMovableEventActivity</string>
+    <string name="title_activity_add_moveable_event">AddMoveableEventActivity</string>
+    <string name="approx_duration">Enter the approximate duration</string>
+    <string name="menu_start_time">Start</string>
+    <string name="menu_end_time">End</string>
 </resources>
