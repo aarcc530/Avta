@@ -75,14 +75,9 @@ public class WeekViewFragment extends Fragment {
         weekView.goToCurrentTime();
     }
 
-    public void notifyWeekView() {
-        System.out.println("ouhoohiiohiooi");
-
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        if (Build.VERSION.SDK_INT >= 26) {
-            ft.setReorderingAllowed(false);
-        }
-        ft.detach(this).attach(this).commit();
+    public void notifyWeekView(ArrayList<Event> events) {
+        this.events = events;
+        weekView.notifyDataSetChanged();
     }
 
     @Override

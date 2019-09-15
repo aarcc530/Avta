@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity
             if (setEventListFragment != null)
                 setEventListFragment.notifyAdapter(events);
             if (weekViewFragment != null)
-                weekViewFragment.notifyWeekView();
+                weekViewFragment.notifyWeekView(events);
         }
         else if (requestCode == ADD_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             MovableEvent e = data.getParcelableExtra("event");
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity
             if (setEventListFragment != null)
                 setEventListFragment.notifyAdapter(events);
             if (weekViewFragment != null)
-                weekViewFragment.notifyWeekView();
+                weekViewFragment.notifyWeekView(events);
         }
     }
 }
