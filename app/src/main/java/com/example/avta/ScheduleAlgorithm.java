@@ -29,26 +29,30 @@ public class ScheduleAlgorithm {
         Collections.sort(nonSetEvents); //by due date
 
         //Removes any set events not in the next week
-        Iterator<Event> itr = scheduleWorking.iterator();
-        while (itr.hasNext()) {
-            if (itr.next().getStart().isAfter(LocalDateTime.now().plusWeeks(1)))
-                itr.remove();
+        if (scheduleWorking.size() != 0) {
+            Iterator<Event> itr = scheduleWorking.iterator();
+            while (itr.hasNext()) {
+                if (itr.next().getStart().isAfter(LocalDateTime.now().plusWeeks(1)))
+                    itr.remove();
+            }
         }
 
         //Creates all available time periods
+        if (scheduleWorking.size() == 0)
+        {
+            LocalDateTime[] temp = new LocalDateTime[2];
+            temp[0] = LocalDateTime.now().plusMinutes(20);
+            temp[1] = LocalDateTime.now().plusWeeks(1);
+            freeTime.add(temp);
+        }
         for (int i = 0; i < scheduleWorking.size(); i++) {
             LocalDateTime[] temp = new LocalDateTime[2];
             //Has to create the first set up until the first class
+
             if (i == 0) {
-                if (scheduleWorking.size() == 0)
-                {
-                    temp[0] = LocalDateTime.now().plusHours(1);
-                    temp[1] = LocalDateTime.now().plusWeeks(1);
-                    freeTime.add(temp);
-                    break;
-                }
+
                 if (scheduleWorking.get(i).getStart().isAfter(LocalDateTime.now().plusHours(1)) && !(Duration.between(LocalDateTime.now().plusHours(1), scheduleWorking.get(i).getStart().minusMinutes(5)).toMinutes() < 10)) {
-                    temp[0] = LocalDateTime.now().plusHours(1);
+                    temp[0] = LocalDateTime.now().plusMinutes(20);
                     temp[1] = scheduleWorking.get(i).getStart().minusMinutes(10);
                     freeTime.add(temp);
                     temp = new LocalDateTime[2];
@@ -56,8 +60,10 @@ public class ScheduleAlgorithm {
             }
             //creates the time between the other set events as free time (with a 10 minute gap, and making sure there it is at least 10 minutes of free time)
             if (scheduleWorking.size() != 1 && i != scheduleWorking.size()-1) {
-                if (Duration.between(scheduleWorking.get(i).getEnd().plusMinutes(5), scheduleWorking.get(i + 1).getStart().minusMinutes(5)).toMinutes() < 10)
+                if (Duration.between(scheduleWorking.get(i).getEnd().plusMinutes(5), scheduleWorking.get(i + 1).getStart().minusMinutes(5)).toMinutes() < 10) {
+                    System.out.println("Skipping time period of length " + Duration.between(scheduleWorking.get(i).getEnd().plusMinutes(5), scheduleWorking.get(i + 1).getStart().minusMinutes(5)).toMinutes() + " and you will find me using wasd");
                     continue;
+                }
                 if (i < scheduleWorking.size() - 1) {
                     temp[0] = scheduleWorking.get(i).getEnd().plusMinutes(5);
                     temp[1] = scheduleWorking.get(i + 1).getStart().minusMinutes(5);
