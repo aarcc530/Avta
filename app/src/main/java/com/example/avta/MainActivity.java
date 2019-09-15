@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity
     private SetEventListFragment setEventListFragment;
     private MovableEventListFragment movableEventListFragment;
     private WeekViewFragment weekViewFragment;
-    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +80,6 @@ public class MainActivity extends AppCompatActivity
         NavigationUI.setupWithNavController(navigationView, navController);
 
         events = new ArrayList<>();
-
-        fragmentManager = getSupportFragmentManager();
     }
 
     public ArrayList<Event> getEvents() {
