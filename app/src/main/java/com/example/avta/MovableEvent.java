@@ -31,9 +31,6 @@ public class MovableEvent extends Event implements Parcelable {
         return dueDate;
     }
 
-    public int getEnjoyLevel() {
-        return enjoyLevel;
-    }
 
     public int compareTo (MovableEvent other) {
         if (this.dueDate.isBefore(other.getDueDate()))

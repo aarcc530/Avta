@@ -17,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -37,11 +38,16 @@ public class MainActivity extends AppCompatActivity
     private static final int ADD_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE = 1;
     private static final int EDIT_SET_EVENT_ACTIVITY_REQUEST_CODE = 2;
     private static final int EDIT_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE = 3;
+    private static final int SIGN_IN_ACTIVITY_REQUEST_CODE = 4;
 
     private ArrayList<Event> events;
     private SetEventListFragment setEventListFragment;
     private MovableEventListFragment movableEventListFragment;
     private WeekViewFragment weekViewFragment;
+    private String userId = "";
+    private boolean signedIn = false;
+
+    private FirebaseFirestore fb = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,15 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), AddMovableEventActivity.class);
                 startActivityForResult(intent, ADD_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
+        FloatingActionButton fab3 = findViewById(R.id.signInButton);
+        fab3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), SignInActivity.class);
+                startActivityForResult(intent, SIGN_IN_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -142,12 +157,20 @@ public class MainActivity extends AppCompatActivity
             events.add(e);
 
             events = ScheduleAlgorithm.algorithm(events);
+            if (signedIn)
+                FirebasePushPull.fireBasePush(events, fb, userId);
             if (movableEventListFragment != null)
                 movableEventListFragment.notifyAdapter(events);
             if (setEventListFragment != null)
                 setEventListFragment.notifyAdapter(events);
             if (weekViewFragment != null)
                 weekViewFragment.notifyWeekView(events);
+        }
+        else if (requestCode == SIGN_IN_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            userId = data.getParcelableExtra("userId");
+            if (fb.document("/users/" + userId) == null)
+                fb.collection("/users").add(userId);
+            signedIn = true;
         }
     }
 }
