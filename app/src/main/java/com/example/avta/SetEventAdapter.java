@@ -1,5 +1,6 @@
 package com.example.avta;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ public class SetEventAdapter extends RecyclerView.Adapter<SetEventAdapter.EventV
 
     private ArrayList<Event> events;
     private Context context;
+    private Event recentlyDeletedItem;
+    private int recentlyDeletedItemPosition;
 
     public SetEventAdapter(ArrayList<Event> events, Context context) {
         this.events = events;
@@ -83,6 +88,33 @@ public class SetEventAdapter extends RecyclerView.Adapter<SetEventAdapter.EventV
     public void changeEvents(ArrayList<Event> events) {
         this.events = events;
         notifyDataSetChanged();
+    }
+
+    public void deleteItem(int position) {
+        recentlyDeletedItem = events.get(position);
+        recentlyDeletedItemPosition = position;
+        events.remove(position);
+        notifyItemRemoved(position);
+        showUndoSnackbar();
+    }
+
+    private void showUndoSnackbar() {
+        View view = ((Activity) context).findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(view, "1 task deleted",
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                undoDelete();
+            }
+        });
+        snackbar.show();
+    }
+
+    private void undoDelete() {
+        events.add(recentlyDeletedItemPosition,
+                recentlyDeletedItem);
+        notifyItemInserted(recentlyDeletedItemPosition);
     }
 
     @Override

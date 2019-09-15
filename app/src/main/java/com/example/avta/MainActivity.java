@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity
     private SetEventListFragment setEventListFragment;
     private MovableEventListFragment movableEventListFragment;
     private WeekViewFragment weekViewFragment;
-    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +80,6 @@ public class MainActivity extends AppCompatActivity
         NavigationUI.setupWithNavController(navigationView, navController);
 
         events = new ArrayList<>();
-
-        fragmentManager = getSupportFragmentManager();
     }
 
     public ArrayList<Event> getEvents() {
@@ -129,7 +126,7 @@ public class MainActivity extends AppCompatActivity
             if (setEventListFragment != null)
                 setEventListFragment.notifyAdapter(events);
             if (weekViewFragment != null)
-                weekViewFragment.notifyWeekView();
+                weekViewFragment.notifyWeekView(events);
         }
         else if (requestCode == ADD_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             MovableEvent e = data.getParcelableExtra("event");
@@ -141,7 +138,7 @@ public class MainActivity extends AppCompatActivity
             if (setEventListFragment != null)
                 setEventListFragment.notifyAdapter(events);
             if (weekViewFragment != null)
-                weekViewFragment.notifyWeekView();
+                weekViewFragment.notifyWeekView(events);
         }
     }
 }

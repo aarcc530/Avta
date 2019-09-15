@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,7 +15,9 @@ import android.view.ViewGroup;
 
 import com.example.avta.Event;
 import com.example.avta.MainActivity;
+import com.example.avta.MovableEvent;
 import com.example.avta.MovableEventAdapter;
+import com.example.avta.MovableEventSwipeToDeleteCallback;
 import com.example.avta.R;
 import com.example.avta.SetEventAdapter;
 
@@ -59,6 +62,9 @@ public class MovableEventListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         adapter = new MovableEventAdapter(((MainActivity) getActivity()).getEvents(), getActivity());
+
+        ItemTouchHelper ith = new ItemTouchHelper(new MovableEventSwipeToDeleteCallback(getActivity(), adapter));
+        ith.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(adapter);
     }

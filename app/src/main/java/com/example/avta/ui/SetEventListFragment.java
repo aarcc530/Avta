@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,8 +16,10 @@ import android.view.ViewGroup;
 
 import com.example.avta.Event;
 import com.example.avta.MainActivity;
+import com.example.avta.MovableEventSwipeToDeleteCallback;
 import com.example.avta.R;
 import com.example.avta.SetEventAdapter;
+import com.example.avta.SetEventSwipeToDeleteCallback;
 
 import java.util.ArrayList;
 
@@ -59,6 +62,9 @@ public class SetEventListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         adapter = new SetEventAdapter(((MainActivity) getActivity()).getEvents(), getActivity());
+
+        ItemTouchHelper ith = new ItemTouchHelper(new SetEventSwipeToDeleteCallback(getActivity(), adapter));
+        ith.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(adapter);
     }

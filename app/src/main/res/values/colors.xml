@@ -9,4 +9,6 @@
     <color name="colorHighlight">#DBF3FA</color>
 
     <color name="black_overlay">#66000000</color>
+
+    <color name="colorDelete">#D00000</color>
 </resources>
