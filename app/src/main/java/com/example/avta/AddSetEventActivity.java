@@ -5,29 +5,37 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class AddSetEventActivity extends AppCompatActivity {
     private DateTimeFormatter dateFormat, timeFormat;
     private EditText startDateInput, startTimeInput, endDateInput, endTimeInput;
     private LocalDateTime startDate, endDate, currentDate;
+    private ArrayList<Event> events;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_set_event);
+
+        events = getIntent().getParcelableArrayListExtra("events");
 
         startTimeInput = findViewById(R.id.startTimeInput);
         startDateInput = findViewById(R.id.startDateInput);
@@ -62,9 +70,32 @@ public class AddSetEventActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.complete_button) {
+            // Hide keyboard
+            View view = this.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null)
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+
+            // Check that event doesn't start during another
+            for (Event e : events) {
+                if (e instanceof SetEvent &&
+                        startDate.isBefore(e.getEnd()) && e.getStart().isBefore(endDate)) {
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                            "Time overlaps with " + e.getEventName(), Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    return super.onOptionsItemSelected(item);
+                }
+            }
+
             Intent intent = new Intent();
             intent.putExtra("startDate", startDate);
             intent.putExtra("endDate", endDate);
+            intent.putExtra("name",
+                    ((EditText) findViewById(R.id.nameInput)).getText().toString());
+            intent.putExtra("description",
+                    ((EditText) findViewById(R.id.descInput)).getText().toString());
             setResult(RESULT_OK, intent);
 
             finish();
@@ -134,6 +165,7 @@ public class AddSetEventActivity extends AppCompatActivity {
     }
 
     public void selectEndTime(View view) {
+        // TODO: Prevent user from selecting end time before start time on same day
         new TimePickerDialog(view.getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
