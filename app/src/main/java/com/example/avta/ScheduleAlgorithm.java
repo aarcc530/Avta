@@ -9,7 +9,7 @@ import java.time.Duration;
 
 public class ScheduleAlgorithm {
 
-    public Event[] algorithm (Event[] events) {
+    public static ArrayList<Event> algorithm (ArrayList<Event> events) {
         //Initialize internal variables
         Event[] schedule = null;
         ArrayList<MovableEvent> nonSetEvents = null;
@@ -95,7 +95,7 @@ public class ScheduleAlgorithm {
 
 
         //Final formatting and return
-        scheduleWorking.toArray(schedule);
-        return schedule;
+
+        return scheduleWorking;
     }
 }
