@@ -78,6 +78,14 @@ public class AddSetEventActivity extends AppCompatActivity {
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
 
+            // Check that event doesn't end before it starts
+            if (endDate.isBefore(startDate)) {
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                        "Event can't end before it starts", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                return super.onOptionsItemSelected(item);
+            }
+
             // Check that event doesn't start during another
             for (Event e : events) {
                 if (e instanceof SetEvent &&
