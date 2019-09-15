@@ -19,6 +19,18 @@ public class MovableEvent extends Event implements Parcelable {
         super.setStart(start);
         super.setEnd(end);
     }
+    public LocalDateTime getDueDate () {
+        return dueDate;
+    }
+
+    public int compareTo (MovableEvent other) {
+        if (this.dueDate.isBefore(other.getDueDate()))
+            return -1;
+        else if (this.dueDate.isBefore(other.getDueDate()))
+            return 1;
+        else
+            return 0;
+    }
 
     protected MovableEvent(Parcel in) {
         super(in.readString(),
