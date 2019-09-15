@@ -22,8 +22,6 @@ import com.example.avta.SetEventAdapter;
  * Activities that contain this fragment must implement the
  * {@link SetEventListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SetEventListFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class SetEventListFragment extends Fragment {
     private SetEventAdapter adapter;
@@ -42,8 +40,11 @@ public class SetEventListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_set_event_list, container, false);
+        return inflater.inflate(R.layout.fragment_set_event_list, container, false);
+    }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         Activity activity = getActivity();
         if (activity == null) {
             throw new RuntimeException("Activity is null");
@@ -57,8 +58,6 @@ public class SetEventListFragment extends Fragment {
         adapter = new SetEventAdapter(((MainActivity) getActivity()).getEvents(), getActivity());
 
         recyclerView.setAdapter(adapter);
-
-        return view;
     }
 
     public void notifyAdapter() {

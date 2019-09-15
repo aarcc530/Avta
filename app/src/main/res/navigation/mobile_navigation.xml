@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_movable_event_list" />
 
     <fragment
+        android:id="@+id/nav_week_view"
+        android:name="com.example.avta.ui.WeekViewFragment"
+        android:label="@string/menu_week_view"
+        tools:layout="@layout/fragment_week_view" />
+
+    <fragment
         android:id="@+id/nav_gallery"
         android:name="com.example.avta.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"

@@ -15,6 +15,7 @@
     <string name="menu_send">Send</string>
     <string name="menu_set_event_list">Scheduled Events</string>
     <string name="menu_movable_event_list">Custom Events</string>
+    <string name="menu_week_view">Calendar</string>
 
     <string name="title_activity_add_task">AddTaskActivity</string>
     <string name="dummy_button">Dummy Button</string>
@@ -32,7 +33,4 @@
     <string name="menu_enjoyment">Enjoyment</string>
     <string name="event_list_time_different_day">%s\\n%s</string>
     <string name="event_list_time_same_day">%s - %s %s</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.example.avta.ui.MovableEventListFragment;
 import com.example.avta.ui.SetEventListFragment;
+import com.example.avta.ui.WeekViewFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.view.View;
@@ -27,7 +28,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements SetEventListFragment.OnFragmentInteractionListener,
-        MovableEventListFragment.OnFragmentInteractionListener {
+        MovableEventListFragment.OnFragmentInteractionListener,
+        WeekViewFragment.OnFragmentInteractionListener {
     private AppBarConfiguration mAppBarConfiguration;
 
     private static final int ADD_SET_EVENT_ACTIVITY_REQUEST_CODE = 0;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<Event> events;
     private SetEventListFragment setEventListFragment;
     private MovableEventListFragment movableEventListFragment;
+    private WeekViewFragment weekViewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_set_event_list, R.id.nav_movable_event_list,
+                R.id.nav_set_event_list, R.id.nav_movable_event_list, R.id.nav_week_view,
                 R.id.nav_gallery, R.id.nav_slideshow,
                 R.id.nav_tools, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
@@ -90,6 +93,11 @@ public class MainActivity extends AppCompatActivity
 
     public void onMovableEventListFragmentInitialize(MovableEventListFragment fragment) {
         movableEventListFragment = fragment;
+    }
+
+    public void onWeekViewFragmentInitialize(WeekViewFragment fragment) {
+        weekViewFragment = fragment;
+        weekViewFragment.updateEvents(events);
     }
 
     @Override
@@ -118,6 +126,8 @@ public class MainActivity extends AppCompatActivity
                 movableEventListFragment.notifyAdapter();
             if (setEventListFragment != null)
                 setEventListFragment.notifyAdapter();
+            if (weekViewFragment != null)
+                weekViewFragment.notifyWeekView();
         }
         else if (requestCode == ADD_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             MovableEvent e = data.getParcelableExtra("event");
@@ -128,6 +138,8 @@ public class MainActivity extends AppCompatActivity
                 movableEventListFragment.notifyAdapter();
             if (setEventListFragment != null)
                 setEventListFragment.notifyAdapter();
+            if (weekViewFragment != null)
+                weekViewFragment.notifyWeekView();
         }
     }
 }

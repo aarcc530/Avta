@@ -40,8 +40,11 @@ public class MovableEventListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_movable_event_list, container, false);
+        return inflater.inflate(R.layout.fragment_movable_event_list, container, false);
+    }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         Activity activity = getActivity();
         if (activity == null) {
             throw new RuntimeException("Activity is null");
@@ -55,8 +58,6 @@ public class MovableEventListFragment extends Fragment {
         adapter = new MovableEventAdapter(((MainActivity) getActivity()).getEvents(), getActivity());
 
         recyclerView.setAdapter(adapter);
-
-        return view;
     }
 
     public void notifyAdapter() {
