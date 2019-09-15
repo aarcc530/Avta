@@ -1,6 +1,5 @@
 package com.example.avta;
 
-import android.app.Activity;
 import android.content.Context;
 
 import mobi.upod.timedurationpicker.TimeDurationPickerDialogFragment;
@@ -30,6 +29,6 @@ public class PickerDialogFragment extends TimeDurationPickerDialogFragment {
 
     @Override
     public void onDurationSet(TimeDurationPicker view, long duration) {
-        callback.Update(duration);
+        callback.updateDuration(duration);
     }
 }

@@ -1,5 +1,5 @@
 package com.example.avta;
 
 public interface TimeDurationPickerCallback {
-    void Update(long duration);
+    void updateDuration(long duration);
 }

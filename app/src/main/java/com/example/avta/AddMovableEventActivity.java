@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 public class AddMovableEventActivity extends AppCompatActivity implements TimeDurationPickerCallback {
     private SeekBar seekBar;
     private TextView textView;
+    private EditText durationInput;
     private long duration;
 
     @Override
@@ -27,41 +28,48 @@ public class AddMovableEventActivity extends AppCompatActivity implements TimeDu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_movable_event);
 
+        // Set up event duration selector
+        durationInput = findViewById(R.id.durationInput);
+        updateDuration(15*60*1000);
+
+        // Set up seek bar for enjoyment value
         seekBar = findViewById(R.id.seek_Bar);
         textView = findViewById(R.id.enjoymentValue);
 
-        textView.setText("Enjoyment : " + seekBar.getProgress() + " / " +seekBar.getMax());
+        textView.setText(getApplicationContext().getString(R.string.enjoyment_selector_text,
+                0, seekBar.getMax()));
         seekBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener() {
-                    int progress_value;
-
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        progress_value = progress;
-                        textView.setText("Enjoyment : " + progress + " / " + seekBar.getMax());
+                        textView.setText(getApplicationContext().getString(
+                                R.string.enjoyment_selector_text,
+                                progress, seekBar.getMax()));
                     }
 
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) { }
 
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                        textView.setText("Enjoyment : " + progress_value + " / " + seekBar.getMax());
-                    }
+                    public void onStopTrackingTouch(SeekBar seekBar) { }
                 }
         );
 
         // Change title text
         ActionBar actionBar = getSupportActionBar();
-        System.out.println("wqoehfoqiwefoqjiweof");
         System.out.println(actionBar == null);
         if (actionBar != null) {
             actionBar.setTitle("Add Movable Event");
         }
     }
 
-    public void Update(long duration) {
+    public void updateDuration(long duration) {
         this.duration = duration;
+        long minutes = (duration / 1000) / 60;
+        long hours = minutes / 60;
+        minutes %= 60;
+        durationInput.setText(getApplicationContext().getString(R.string.select_duration, hours,
+                minutes));
     }
 
     @Override
