@@ -50,7 +50,6 @@ public class ScheduleAlgorithm {
             //Has to create the first set up until the first class
 
             if (i == 0) {
-
                 if (scheduleWorking.get(i).getStart().isAfter(LocalDateTime.now().plusMinutes(20)) && !(Duration.between(LocalDateTime.now().plusMinutes(20), scheduleWorking.get(i).getStart().minusMinutes(5)).toMinutes() < 10)) {
                     temp[0] = LocalDateTime.now().plusMinutes(20);
                     temp[1] = scheduleWorking.get(i).getStart().minusMinutes(10);
@@ -67,13 +66,14 @@ public class ScheduleAlgorithm {
                 if (i < scheduleWorking.size() - 1) {
                     temp[0] = scheduleWorking.get(i).getEnd().plusMinutes(5);
                     temp[1] = scheduleWorking.get(i + 1).getStart().minusMinutes(5);
+                    freeTime.add(temp);
                 }
                 continue;
             }
             //Sets the gap between the last one and the end of the week, should it exist
             if (scheduleWorking.get(i).getEnd().isBefore(LocalDateTime.now().plusWeeks(1))) {
                 temp[0] = scheduleWorking.get(i).getEnd().plusMinutes(5);
-                temp[1] = LocalDateTime.now().plusWeeks(1);
+                temp[1] = LocalDateTime.MAX;
             }
             //escapes if the last two aren't true
             else {
