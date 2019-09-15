@@ -1,15 +1,16 @@
 package com.example.avta;
 
 import net.fortuna.ical4j.data.CalendarOutputter;
-import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.util.RandomUidGenerator;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Environment;
-import java.io.*;
 import android.net.Uri;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 
 
 public class CreateCalendar extends Activity {

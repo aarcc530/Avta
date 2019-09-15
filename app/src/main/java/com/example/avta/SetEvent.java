@@ -2,9 +2,7 @@ package com.example.avta;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import java.time.LocalDateTime;
-
 import java.time.Duration;
 
 class SetEvent extends Event implements Parcelable {

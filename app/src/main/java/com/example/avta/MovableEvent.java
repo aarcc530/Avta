@@ -2,7 +2,6 @@ package com.example.avta;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import java.time.LocalDateTime;
 
 public class MovableEvent extends Event implements Parcelable {
