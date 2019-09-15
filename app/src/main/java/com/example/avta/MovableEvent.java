@@ -9,7 +9,7 @@ public class MovableEvent extends Event implements Parcelable {
     private int enjoyLevel;
 
     public MovableEvent () {
-        
+
     }
 
     public MovableEvent (String name, long length, String subject, LocalDateTime dueDate, int enjoyLevel) {
