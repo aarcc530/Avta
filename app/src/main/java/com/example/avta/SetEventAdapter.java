@@ -15,7 +15,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class SetEventAdapter extends RecyclerView.Adapter<SetEventAdapter.EventViewHolder> {
-    class EventViewHolder extends RecyclerView.ViewHolder {
+    class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        Event event;
         TextView textViewHeading;
         TextView textViewDescription;
         TextView textViewTime;
@@ -26,6 +27,13 @@ public class SetEventAdapter extends RecyclerView.Adapter<SetEventAdapter.EventV
             textViewHeading = itemView.findViewById(R.id.textViewHeading);
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
             textViewTime = itemView.findViewById(R.id.textViewTime);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            clickListener.recyclerViewListClicked(v, event);
         }
     }
 
@@ -33,10 +41,12 @@ public class SetEventAdapter extends RecyclerView.Adapter<SetEventAdapter.EventV
     private Context context;
     private Event recentlyDeletedItem;
     private int recentlyDeletedItemPosition;
+    private RecyclerViewClickListener clickListener;
 
-    public SetEventAdapter(ArrayList<Event> events, Context context) {
+    public SetEventAdapter(ArrayList<Event> events, Context context, RecyclerViewClickListener clickListener) {
         this.events = events;
         this.context = context;
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -55,6 +65,7 @@ public class SetEventAdapter extends RecyclerView.Adapter<SetEventAdapter.EventV
         }
 
         Event listItem = events.get(position);
+        holder.event = listItem;
 
         holder.itemView.setVisibility(View.VISIBLE);
         holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));

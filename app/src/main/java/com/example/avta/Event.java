@@ -33,9 +33,17 @@ public class Event implements Parcelable, Comparable<Event>, WeekViewDisplayable
 
     @Override
     public WeekViewEvent<Event> toWeekViewEvent() {
-        WeekViewEvent.Style style = new WeekViewEvent.Style.Builder()
-                .setBackgroundColor(Color.parseColor("#00574B"))
-                .build();
+        WeekViewEvent.Style style;
+        if (this instanceof SetEvent) {
+            style = new WeekViewEvent.Style.Builder()
+                    .setBackgroundColor(Color.parseColor("#D81B60"))
+                    .build();
+        }
+        else {
+            style = new WeekViewEvent.Style.Builder()
+                    .setBackgroundColor(Color.parseColor("#800f38"))
+                    .build();
+        }
 
         Calendar startCal = Calendar.getInstance();
         startCal.clear();

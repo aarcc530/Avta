@@ -23,6 +23,10 @@ public class MovableEvent extends Event implements Parcelable {
         super.setEnd(end);
     }
 
+    public int getEnjoyLevel() {
+        return enjoyLevel;
+    }
+
     public LocalDateTime getDueDate () {
         return dueDate;
     }

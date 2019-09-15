@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddMovableEventActivity">
+    tools:context=".EditMovableEventActivity">
 
     <EditText
         android:id="@+id/nameInput"
@@ -114,6 +114,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
+
     <View
         android:id="@+id/divider4"
         android:layout_width="match_parent"
@@ -146,6 +147,5 @@
         android:onClick="selectDueDate"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

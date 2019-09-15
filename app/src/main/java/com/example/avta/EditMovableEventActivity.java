@@ -23,8 +23,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-
-public class AddMovableEventActivity extends AppCompatActivity implements TimeDurationPickerCallback {
+public class EditMovableEventActivity extends AppCompatActivity implements TimeDurationPickerCallback{
     private SeekBar seekBar;
     private TextView textView;
     private EditText durationInput, dueDateInput;
@@ -32,15 +31,25 @@ public class AddMovableEventActivity extends AppCompatActivity implements TimeDu
     private LocalDateTime dueDate, currentDate;
     private DateTimeFormatter dateFormat;
 
+    private int prevEventHashCode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO: add due date selector
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_movable_event);
+        setContentView(R.layout.activity_edit_movable_event);
+
+        MovableEvent event = getIntent().getParcelableExtra("event");
+        prevEventHashCode = event.hashCode();
+
+        // Set up name
+        ((EditText) findViewById(R.id.nameInput)).setText(event.getEventName());
+
+        // Set up subject
+        ((EditText) findViewById(R.id.subjectInput)).setText(event.getSubject());
 
         // Set up event duration selector
         durationInput = findViewById(R.id.durationInput);
-        updateDuration(30 * 60 * 1000);
+        updateDuration(event.getLength() * 60 * 1000);
 
         // Set up seek bar for enjoyment value
         seekBar = findViewById(R.id.seek_Bar);
@@ -65,11 +74,13 @@ public class AddMovableEventActivity extends AppCompatActivity implements TimeDu
                 }
         );
 
+        seekBar.setProgress(event.getEnjoyLevel());
+
         // Change title text
         ActionBar actionBar = getSupportActionBar();
         System.out.println(actionBar == null);
         if (actionBar != null) {
-            actionBar.setTitle("Add Movable Event");
+            actionBar.setTitle("Edit Movable Event");
         }
 
         // Due date
@@ -78,7 +89,7 @@ public class AddMovableEventActivity extends AppCompatActivity implements TimeDu
         dueDateInput = findViewById(R.id.dueDateInput);
 
         currentDate = LocalDateTime.now().withNano(0).withSecond(0);
-        dueDate = currentDate;
+        dueDate = event.getDueDate();
 
         updateDueDate();
     }
@@ -136,6 +147,7 @@ public class AddMovableEventActivity extends AppCompatActivity implements TimeDu
 
             Intent intent = new Intent();
             intent.putExtra("event", e);
+            intent.putExtra("prevEventHashCode", prevEventHashCode);
             setResult(RESULT_OK, intent);
 
             finish();

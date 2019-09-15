@@ -15,11 +15,15 @@ public class PickerDialogFragment extends TimeDurationPickerDialogFragment {
         if (ctx instanceof TimeDurationPickerCallback) {
             callback = (TimeDurationPickerCallback) ctx;
         }
+        else {
+            throw new RuntimeException(ctx.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     protected long getInitialDuration() {
-        return 15 * 60 * 1000;
+        return 0;
     }
 
     @Override
