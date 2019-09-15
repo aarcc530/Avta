@@ -78,10 +78,27 @@ public class AddSetEventActivity extends AppCompatActivity {
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
 
+            String name = ((EditText) findViewById(R.id.nameInput)).getText().toString().trim();
+            // Check that event name is not empty
+            if (name.length() == 0) {
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                        "Event name can't be empty", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                return super.onOptionsItemSelected(item);
+            }
+
             // Check that event doesn't end before it starts
             if (endDate.isBefore(startDate)) {
                 Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
                         "Event can't end before it starts", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                return super.onOptionsItemSelected(item);
+            }
+
+            // Check that event doesn't end when it starts
+            if (endDate.isEqual(startDate)) {
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                        "Event duration can't be 0", Snackbar.LENGTH_LONG);
                 snackbar.show();
                 return super.onOptionsItemSelected(item);
             }
@@ -97,8 +114,8 @@ public class AddSetEventActivity extends AppCompatActivity {
                 }
             }
 
-            SetEvent e = new SetEvent(((EditText) findViewById(R.id.nameInput)).getText().toString(),
-                    ((EditText) findViewById(R.id.descInput)).getText().toString(),
+            SetEvent e = new SetEvent(name,
+                    ((EditText) findViewById(R.id.descInput)).getText().toString().trim(),
                     startDate, endDate);
 
             Intent intent = new Intent();

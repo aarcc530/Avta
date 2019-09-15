@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.time.LocalDateTime;
 
 
@@ -89,8 +91,25 @@ public class AddMovableEventActivity extends AppCompatActivity implements TimeDu
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
 
-            MovableEvent e = new MovableEvent(((EditText) findViewById(R.id.nameInput)).getText().toString(),
-                    duration, ((EditText) findViewById(R.id.subjectInput)).getText().toString(),
+            String name = ((EditText) findViewById(R.id.nameInput)).getText().toString().trim();
+            // Check that event name is not empty
+            if (name.length() == 0) {
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                        "Event name can't be empty", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                return super.onOptionsItemSelected(item);
+            }
+
+            // Check that duration is not 0
+            if (duration == 0) {
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                        "Duration can't be 0", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                return super.onOptionsItemSelected(item);
+            }
+
+            MovableEvent e = new MovableEvent(name, duration,
+                    ((EditText) findViewById(R.id.subjectInput)).getText().toString().trim(),
                     LocalDateTime.MAX, seekBar.getProgress());
 
             Intent intent = new Intent();
