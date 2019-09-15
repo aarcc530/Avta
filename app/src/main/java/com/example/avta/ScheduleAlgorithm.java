@@ -40,6 +40,13 @@ public class ScheduleAlgorithm {
             LocalDateTime[] temp = new LocalDateTime[2];
             //Has to create the first set up until the first class
             if (i == 0) {
+                if (scheduleWorking.size() == 0)
+                {
+                    temp[0] = LocalDateTime.now().plusHours(1);
+                    temp[1] = LocalDateTime.now().plusWeeks(1);
+                    freeTime.add(temp);
+                    break;
+                }
                 if (scheduleWorking.get(i).getStart().isAfter(LocalDateTime.now().plusHours(1)) && !(Duration.between(LocalDateTime.now().plusHours(1), scheduleWorking.get(i).getStart().minusMinutes(5)).toMinutes() < 10)) {
                     temp[0] = LocalDateTime.now().plusHours(1);
                     temp[1] = scheduleWorking.get(i).getStart().minusMinutes(10);
