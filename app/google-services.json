@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "82880309219",
+    "firebase_url": "https://the-avta-project.firebaseio.com",
+    "project_id": "the-avta-project",
+    "storage_bucket": "the-avta-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82880309219:android:f56cfaf5d7ffbedf9fa2d6",
+        "android_client_info": {
+          "package_name": "com.example.avta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "82880309219-i0airnub42od1tuu9ia66ln93h9tchms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPq9gWBZAS015EOMBqgPIWCFbiOvQ4WdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "82880309219-i0airnub42od1tuu9ia66ln93h9tchms.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
