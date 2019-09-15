@@ -28,8 +28,15 @@ public class MovableEvent extends Event implements Parcelable {
             return -1;
         else if (this.dueDate.isBefore(other.getDueDate()))
             return 1;
-        else
-            return 0;
+        else {
+           if (this.enjoyLevel > other.enjoyLevel)
+               return -1;
+           else if (other.enjoyLevel > this.enjoyLevel)
+               return 1;
+           else
+               return 0;
+        }
+
     }
 
     protected MovableEvent(Parcel in) {
