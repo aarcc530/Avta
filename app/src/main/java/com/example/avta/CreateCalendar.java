@@ -1,23 +1,15 @@
 package com.example.avta;
 
-import net.fortuna.ical4j.*;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.component.VEvent;
-import net.fortuna.ical4j.util.FixedUidGenerator;
 import net.fortuna.ical4j.util.RandomUidGenerator;
-import net.fortuna.ical4j.util.UidGenerator;
 
 import android.app.Activity;
 import android.content.Intent;
-import 	android.content.Context;
 import android.os.Environment;
-import android.view.View;
-
 import java.io.*;
 import android.net.Uri;
-import java.time.Duration;
-import java.util.Calendar;
 
 
 public class CreateCalendar extends Activity {
@@ -77,10 +69,9 @@ public class CreateCalendar extends Activity {
            }
 
         }
-        Uri u1  =   null;
-        u1  =   Uri.fromFile(file);
-
-        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        Uri u1 = null;
+        u1 = Uri.fromFile(file);
+        Intent sendIntent = new Intent(Intent.ACTION_SEND, u1);
         sendIntent.setType("text/calendar");
         startActivity(sendIntent);
 

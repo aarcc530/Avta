@@ -30,8 +30,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation fileTree(dir: 'src\\main\\java\\com\\example\\avta\\libraries\\commons-collections4-4.4', include: ['*.aar', '*.jar'], exclude: [])
-    implementation fileTree(dir: 'src\\main\\java\\com\\example\\avta\\libraries\\commons-lang3-3.9', include: ['*.aar', '*.jar'], exclude: [])
-    implementation fileTree(dir: 'src\\main\\java\\com\\example\\avta\\libraries\\ical4j-3.0.0', include: ['*.aar', '*.jar'], exclude: [])
-    implementation fileTree(dir: 'src\\main\\java\\com\\example\\avta\\libraries\\slf4j-1.7.28', include: ['*.aar', '*.jar'], exclude: [])
+    implementation files('src\\main\\java\\com\\example\\avta\\libraries\\commons-collections4-4.4\\commons-collections4-4.4.jar')
+    implementation files('src\\main\\java\\com\\example\\avta\\libraries\\commons-lang3-3.9\\commons-lang3-3.9.jar')
+    implementation files('src\\main\\java\\com\\example\\avta\\libraries\\ical4j-3.0.0\\ical4j-3.0.0.jar')
 }
