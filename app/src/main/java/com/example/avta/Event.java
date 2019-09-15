@@ -15,11 +15,11 @@ public class Event implements Parcelable, Comparable<Event> {
 
     public int compareTo (Event other) {
         if (this.end.isBefore(other.getStart()))
-            return 0;
+            return -1;
         else if (this.start.isAfter(other.getEnd()))
             return 1;
         else
-            return -1;
+            return 0;
     }
 
     String getEventName() {
