@@ -80,6 +80,11 @@ public class SetEventAdapter extends RecyclerView.Adapter<SetEventAdapter.EventV
         }
     }
 
+    public void changeEvents(ArrayList<Event> events) {
+        this.events = events;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return events.size();

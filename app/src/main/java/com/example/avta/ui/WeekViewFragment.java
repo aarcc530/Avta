@@ -2,9 +2,11 @@ package com.example.avta.ui;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +76,13 @@ public class WeekViewFragment extends Fragment {
     }
 
     public void notifyWeekView() {
-        weekView.notifyDataSetChanged();
+        System.out.println("ouhoohiiohiooi");
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (Build.VERSION.SDK_INT >= 26) {
+            ft.setReorderingAllowed(false);
+        }
+        ft.detach(this).attach(this).commit();
     }
 
     @Override

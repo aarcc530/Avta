@@ -10,6 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.view.View;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private SetEventListFragment setEventListFragment;
     private MovableEventListFragment movableEventListFragment;
     private WeekViewFragment weekViewFragment;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +73,7 @@ public class MainActivity extends AppCompatActivity
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_set_event_list, R.id.nav_movable_event_list, R.id.nav_week_view,
-                R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
+                R.id.nav_set_event_list, R.id.nav_movable_event_list, R.id.nav_week_view)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity
         NavigationUI.setupWithNavController(navigationView, navController);
 
         events = new ArrayList<>();
+
+        fragmentManager = getSupportFragmentManager();
     }
 
     public ArrayList<Event> getEvents() {
@@ -123,9 +125,9 @@ public class MainActivity extends AppCompatActivity
             events.add(e);
             events = ScheduleAlgorithm.algorithm(events);
             if (movableEventListFragment != null)
-                movableEventListFragment.notifyAdapter();
+                movableEventListFragment.notifyAdapter(events);
             if (setEventListFragment != null)
-                setEventListFragment.notifyAdapter();
+                setEventListFragment.notifyAdapter(events);
             if (weekViewFragment != null)
                 weekViewFragment.notifyWeekView();
         }
@@ -135,9 +137,9 @@ public class MainActivity extends AppCompatActivity
 
             events = ScheduleAlgorithm.algorithm(events);
             if (movableEventListFragment != null)
-                movableEventListFragment.notifyAdapter();
+                movableEventListFragment.notifyAdapter(events);
             if (setEventListFragment != null)
-                setEventListFragment.notifyAdapter();
+                setEventListFragment.notifyAdapter(events);
             if (weekViewFragment != null)
                 weekViewFragment.notifyWeekView();
         }

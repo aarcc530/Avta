@@ -12,10 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.avta.Event;
 import com.example.avta.MainActivity;
 import com.example.avta.MovableEventAdapter;
 import com.example.avta.R;
 import com.example.avta.SetEventAdapter;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,8 +63,8 @@ public class MovableEventListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    public void notifyAdapter() {
-        adapter.notifyDataSetChanged();
+    public void notifyAdapter(ArrayList<Event> events) {
+        adapter.changeEvents(events);
     }
 
     @Override

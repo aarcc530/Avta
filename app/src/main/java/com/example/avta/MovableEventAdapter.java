@@ -80,6 +80,11 @@ public class MovableEventAdapter extends RecyclerView.Adapter<MovableEventAdapte
         }
     }
 
+    public void changeEvents(ArrayList<Event> events) {
+        this.events = events;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return events.size();
