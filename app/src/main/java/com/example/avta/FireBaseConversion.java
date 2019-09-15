@@ -31,7 +31,7 @@ public class FireBaseConversion {
         }
         if (event instanceof SetEvent)
             arrayListStrings.add(new String[] {"eventType", "SetEvent"});
-        String[][] eventStrings = null;
+        String[][] eventStrings = new String[arrayListStrings.size()][2];
         eventStrings = arrayListStrings.toArray(eventStrings);
         return eventStrings;
     }

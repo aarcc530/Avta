@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity
                 weekViewFragment.notifyWeekView(events);
         }
         else if (requestCode == SIGN_IN_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            userId = data.getParcelableExtra("userId");
+            userId = data.getStringExtra("userId");
             if (fb.document("/users/" + userId) == null)
                 fb.collection("/users").add(userId);
             signedIn = true;

@@ -9,8 +9,18 @@ import java.util.ArrayList;
 
 public class FirebasePushPull {
     public static void fireBasePush (ArrayList<Event> events, FirebaseFirestore db, String userId) {
+        ArrayList<String[]> strings = new ArrayList<>();
         CollectionReference cr = db.collection("/users/"+ userId +"/data/");
-        cr.add(events);
+        for (Event e : events) {
+            strings.add(FireBaseConversion.fireBaseConversion(e)[events.indexOf(e)]);
+        }
+
+
+        for (String[] s : strings) {
+            cr.add(s[0]);
+                cr.document("/users/"+ userId +"/data/" + s[0]).set(s[1]);
+            }
+
     }
 
     public static ArrayList<Event> fireBasePull (FirebaseFirestore db, String userId) {
