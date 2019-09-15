@@ -1,10 +1,17 @@
 package com.example.avta;
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
-import java.time.LocalDateTime;
 
-public class Event implements Parcelable, Comparable<Event> {
+import com.alamkanak.weekview.WeekViewDisplayable;
+import com.alamkanak.weekview.WeekViewEvent;
+
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Objects;
+
+public class Event implements Parcelable, Comparable<Event>, WeekViewDisplayable<Event> {
     private String name;
     private long length;
     private String subject;
@@ -20,19 +27,51 @@ public class Event implements Parcelable, Comparable<Event> {
             return 0;
     }
 
-    String getEventName() {
+    @Override
+    public WeekViewEvent<Event> toWeekViewEvent() {
+        WeekViewEvent.Style style = new WeekViewEvent.Style.Builder()
+                .setBackgroundColor(Color.parseColor("#00574B"))
+                .build();
+
+        Calendar startCal = Calendar.getInstance();
+        startCal.clear();
+        startCal.set(start.getYear(), start.getMonthValue() - 1, start.getDayOfMonth(),
+                start.getHour(), start.getMinute(), start.getSecond());
+
+        Calendar endCal = Calendar.getInstance();
+        endCal.clear();
+        endCal.set(end.getYear(), end.getMonthValue() - 1, end.getDayOfMonth(),
+                end.getHour(), end.getMinute(), end.getSecond());
+
+        return new WeekViewEvent.Builder<Event>()
+                .setId(hashCode())
+                .setTitle(name)
+                .setStartTime(startCal)
+                .setEndTime(endCal)
+                .setLocation(subject)
+                .setAllDay(false)
+                .setStyle(style)
+                .setData(this)
+                .build();
+    }
+
+    public String getEventName() {
         return this.name;
     }
-    long getLength() {
+
+    public long getLength() {
         return this.length;
     }
-    String getSubject() {
+
+    public String getSubject() {
         return this.subject;
     }
-    LocalDateTime getStart() {
+
+    public LocalDateTime getStart() {
         return this.start;
     }
-    LocalDateTime getEnd() {
+
+    public LocalDateTime getEnd() {
         return this.end;
     }
 
@@ -70,6 +109,11 @@ public class Event implements Parcelable, Comparable<Event> {
         subject = in.readString();
         start = LocalDateTime.parse(in.readString());
         end = LocalDateTime.parse(in.readString());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, length, subject, start, end);
     }
 
     @Override

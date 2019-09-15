@@ -18,6 +18,7 @@ public class MovableEvent extends Event implements Parcelable {
         super.setStart(start);
         super.setEnd(end);
     }
+
     public LocalDateTime getDueDate () {
         return dueDate;
     }

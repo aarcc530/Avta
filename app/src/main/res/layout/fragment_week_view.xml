@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.WeekViewFragment">
+
+    <com.alamkanak.weekview.WeekView
+        android:id="@+id/weekView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultEventColor="@color/colorPrimary"
+        app:eventTextColor="@color/colorWhite"
+        app:timeColumnTextSize="12sp"
+        app:hourHeight="60dp"
+        app:timeColumnPadding="8dp"
+        app:timeColumnTextColor="@color/black_overlay"
+        app:timeColumnBackgroundColor="@color/colorWhite"
+        app:headerRowPadding="12dp"
+        app:columnGap="8dp"
+        app:numberOfVisibleDays="3"
+        app:headerRowBackgroundColor="@color/colorBackground"
+        app:dayBackgroundColor="@color/colorWhite"
+        app:todayBackgroundColor="@color/colorHighlight"/>
+
+</FrameLayout>
