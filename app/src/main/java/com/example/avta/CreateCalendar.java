@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.view.View;
 
 import java.io.*;
+import android.net.Uri;
 import java.time.Duration;
 import java.util.Calendar;
 
@@ -76,7 +77,12 @@ public class CreateCalendar extends Activity {
            }
 
         }
+        Uri u1  =   null;
+        u1  =   Uri.fromFile(file);
 
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.setType("text/calendar");
+        startActivity(sendIntent);
 
 
 
