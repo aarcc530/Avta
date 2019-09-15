@@ -3,13 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_set_event_list">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.avta.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_set_event_list"
+        android:name="com.example.avta.ui.SetEventListFragment"
+        android:label="@string/menu_set_event_list"
+        tools:layout="@layout/fragment_set_event_list" />
+
+    <fragment
+        android:id="@+id/nav_movable_event_list"
+        android:name="com.example.avta.ui.MovableEventListFragment"
+        android:label="@string/menu_movable_event_list"
+        tools:layout="@layout/fragment_movable_event_list" />
 
     <fragment
         android:id="@+id/nav_gallery"

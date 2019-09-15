@@ -144,7 +144,7 @@ public class AddSetEventActivity extends AppCompatActivity {
                                 .withDayOfMonth(dayOfMonth);
 
                         if (startDate.isAfter(endDate)) {
-                            endDate = startDate;
+                            endDate = startDate.plusMinutes(30);
                         }
 
                         updateDateTimeDisplay();
@@ -189,7 +189,6 @@ public class AddSetEventActivity extends AppCompatActivity {
     }
 
     public void selectEndTime(View view) {
-        // TODO: Prevent user from selecting end time before start time on same day
         new TimePickerDialog(view.getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {

@@ -3,6 +3,8 @@ package com.example.avta;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.avta.ui.MovableEventListFragment;
+import com.example.avta.ui.SetEventListFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.view.View;
@@ -21,17 +23,19 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity
+        implements SetEventListFragment.OnFragmentInteractionListener,
+        MovableEventListFragment.OnFragmentInteractionListener {
     private AppBarConfiguration mAppBarConfiguration;
 
     private static final int ADD_SET_EVENT_ACTIVITY_REQUEST_CODE = 0;
     private static final int ADD_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE = 1;
 
     private ArrayList<Event> events;
+    private SetEventListFragment setEventListFragment;
+    private MovableEventListFragment movableEventListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
+                R.id.nav_set_event_list, R.id.nav_movable_event_list,
+                R.id.nav_gallery, R.id.nav_slideshow,
                 R.id.nav_tools, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
@@ -73,6 +78,18 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         events = new ArrayList<>();
+    }
+
+    public ArrayList<Event> getEvents() {
+        return events;
+    }
+
+    public void onSetEventListFragmentInitialize(SetEventListFragment fragment) {
+        setEventListFragment = fragment;
+    }
+
+    public void onMovableEventListFragmentInitialize(MovableEventListFragment fragment) {
+        movableEventListFragment = fragment;
     }
 
     @Override
@@ -96,10 +113,16 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == ADD_SET_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             SetEvent e = data.getParcelableExtra("event");
             events.add(e);
+
+            if (setEventListFragment != null)
+                setEventListFragment.notifyAdapter();
         }
         else if (requestCode == ADD_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             MovableEvent e = data.getParcelableExtra("event");
             events.add(e);
+
+            if (movableEventListFragment != null)
+                movableEventListFragment.notifyAdapter();
         }
     }
 }
