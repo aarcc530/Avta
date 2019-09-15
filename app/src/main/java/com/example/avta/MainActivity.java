@@ -8,6 +8,8 @@ import com.example.avta.ui.SetEventListFragment;
 import com.example.avta.ui.WeekViewFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.provider.CalendarContract;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
@@ -26,6 +28,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements SetEventListFragment.OnFragmentInteractionListener,
@@ -103,6 +106,34 @@ public class MainActivity extends AppCompatActivity
     public void onWeekViewFragmentInitialize(WeekViewFragment fragment) {
         weekViewFragment = fragment;
         weekViewFragment.updateEvents(events);
+    }
+
+    public void onClickExport(MenuItem m) {
+        for (int i = 0; i < events.size(); i++) {
+            //Sets start time for event
+            java.util.Calendar start = Calendar.getInstance();
+            start.set(java.util.Calendar.MONTH, events.get(i).getStart().getMonthValue() - 1);
+            start.set(java.util.Calendar.DAY_OF_MONTH, events.get(i).getStart().getDayOfMonth());
+            start.set(java.util.Calendar.YEAR, events.get(i).getStart().getYear());
+            start.set(java.util.Calendar.HOUR_OF_DAY, events.get(i).getStart().getHour());
+            start.set(java.util.Calendar.MINUTE, events.get(i).getStart().getMinute());
+
+            //Sets end time for event
+            java.util.Calendar end = Calendar.getInstance();
+            end.set(java.util.Calendar.MONTH, events.get(i).getEnd().getMonthValue() - 1);
+            end.set(java.util.Calendar.DAY_OF_MONTH, events.get(i).getEnd().getDayOfMonth());
+            end.set(java.util.Calendar.YEAR, events.get(i).getEnd().getYear());
+            end.set(java.util.Calendar.HOUR_OF_DAY, events.get(i).getEnd().getHour());
+            end.set(java.util.Calendar.MINUTE, events.get(i).getEnd().getMinute());
+
+            Intent intent = new Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start.getTimeInMillis())
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end.getTimeInMillis())
+                    .putExtra(CalendarContract.Events.TITLE, events.get(i).getEventName())
+                    .putExtra(CalendarContract.Events.DESCRIPTION, events.get(i).getSubject());
+            startActivity(intent);
+        }
     }
 
     @Override

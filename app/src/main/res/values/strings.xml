@@ -34,4 +34,5 @@
     <string name="menu_enjoyment">Enjoyment</string>
     <string name="event_list_time_different_day">%s\\n%s</string>
     <string name="event_list_time_same_day">%s - %s %s</string>
+    <string name="action_export">Export all events</string>
 </resources>
