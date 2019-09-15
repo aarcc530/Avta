@@ -51,7 +51,7 @@ public class ScheduleAlgorithm {
 
             if (i == 0) {
 
-                if (scheduleWorking.get(i).getStart().isAfter(LocalDateTime.now().plusHours(1)) && !(Duration.between(LocalDateTime.now().plusHours(1), scheduleWorking.get(i).getStart().minusMinutes(5)).toMinutes() < 10)) {
+                if (scheduleWorking.get(i).getStart().isAfter(LocalDateTime.now().plusMinutes(20)) && !(Duration.between(LocalDateTime.now().plusMinutes(20), scheduleWorking.get(i).getStart().minusMinutes(5)).toMinutes() < 10)) {
                     temp[0] = LocalDateTime.now().plusMinutes(20);
                     temp[1] = scheduleWorking.get(i).getStart().minusMinutes(10);
                     freeTime.add(temp);
