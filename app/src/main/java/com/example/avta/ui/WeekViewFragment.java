@@ -1,30 +1,35 @@
 package com.example.avta.ui;
 
 import android.content.Context;
-import android.net.Uri;
-import android.os.Build;
+import android.content.Intent;
+import android.graphics.RectF;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alamkanak.weekview.EventClickListener;
 import com.alamkanak.weekview.MonthChangeListener;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewDisplayable;
-import com.alamkanak.weekview.WeekViewEvent;
+import com.example.avta.EditMovableEventActivity;
+import com.example.avta.EditSetEventActivity;
 import com.example.avta.Event;
+import com.example.avta.MainActivity;
+import com.example.avta.MovableEvent;
 import com.example.avta.R;
+import com.example.avta.ScheduleAlgorithm;
+import com.example.avta.SetEvent;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +39,9 @@ import java.util.TimeZone;
  * create an instance of this fragment.
  */
 public class WeekViewFragment extends Fragment {
+    private static final int EDIT_SET_EVENT_ACTIVITY_REQUEST_CODE = 2;
+    private static final int EDIT_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE = 3;
+
     private OnFragmentInteractionListener mListener;
     private ArrayList<Event> events;
     private WeekView<Event> weekView;
@@ -72,6 +80,22 @@ public class WeekViewFragment extends Fragment {
             }
         });
 
+        weekView.setOnEventClickListener(new EventClickListener<Event>() {
+            @Override
+            public void onEventClick(Event event, RectF rectF) {
+                if (event instanceof MovableEvent) {
+                    Intent intent = new Intent(getActivity(), EditMovableEventActivity.class);
+                    intent.putExtra("event", event);
+                    startActivityForResult(intent, EDIT_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE);
+                }
+                else {
+                    Intent intent = new Intent(getActivity(), EditSetEventActivity.class);
+                    intent.putParcelableArrayListExtra("events", events);
+                    intent.putExtra("event", event);
+                    startActivityForResult(intent, EDIT_SET_EVENT_ACTIVITY_REQUEST_CODE);
+                }
+            }
+        });
         weekView.goToCurrentTime();
     }
 
@@ -114,5 +138,50 @@ public class WeekViewFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         void onWeekViewFragmentInitialize(WeekViewFragment fragment);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("weekviewfragment qoiwejfoiqwejfoij");
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            System.out.println("in edit request code");
+            MovableEvent e = data.getParcelableExtra("event");
+            int prevEventHashCode = data.getIntExtra("prevEventHashCode", -1);
+
+            ArrayList<Event> temp = new ArrayList<>();
+            for (Event tempEvent : events) {
+                if (tempEvent.hashCode() != prevEventHashCode) {
+                    temp.add(tempEvent);
+                }
+                else
+                    System.out.println("hit hash");
+            }
+            temp.add(e);
+
+            events = ScheduleAlgorithm.algorithm(temp);
+            notifyWeekView(events);
+
+            ((MainActivity) getActivity()).setEvents(events);
+        }
+        else if (requestCode == EDIT_SET_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            SetEvent e = data.getParcelableExtra("event");
+            int prevEventHashCode = data.getIntExtra("prevEventHashCode", -1);
+
+            ArrayList<Event> temp = new ArrayList<>();
+            for (Event tempEvent : events) {
+                if (tempEvent.hashCode() != prevEventHashCode) {
+                    temp.add(tempEvent);
+                }
+                else
+                    System.out.println("hit hash");
+            }
+            temp.add(e);
+
+            events = ScheduleAlgorithm.algorithm(temp);
+            notifyWeekView(events);
+
+            ((MainActivity) getActivity()).setEvents(events);
+        }
     }
 }

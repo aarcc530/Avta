@@ -2,6 +2,7 @@ package com.example.avta.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,15 +14,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.avta.EditMovableEventActivity;
 import com.example.avta.Event;
 import com.example.avta.MainActivity;
 import com.example.avta.MovableEvent;
 import com.example.avta.MovableEventAdapter;
 import com.example.avta.MovableEventSwipeToDeleteCallback;
 import com.example.avta.R;
-import com.example.avta.SetEventAdapter;
+import com.example.avta.RecyclerViewClickListener;
+import com.example.avta.ScheduleAlgorithm;
 
 import java.util.ArrayList;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +34,9 @@ import java.util.ArrayList;
  * {@link MovableEventListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class MovableEventListFragment extends Fragment {
+public class MovableEventListFragment extends Fragment implements RecyclerViewClickListener {
+    private static final int EDIT_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE = 3;
+
     private OnFragmentInteractionListener mListener;
     private MovableEventAdapter adapter;
 
@@ -61,7 +68,7 @@ public class MovableEventListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapter = new MovableEventAdapter(((MainActivity) getActivity()).getEvents(), getActivity());
+        adapter = new MovableEventAdapter(((MainActivity) getActivity()).getEvents(), getActivity(), this);
 
         ItemTouchHelper ith = new ItemTouchHelper(new MovableEventSwipeToDeleteCallback(getActivity(), adapter));
         ith.attachToRecyclerView(recyclerView);
@@ -103,5 +110,39 @@ public class MovableEventListFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         void onMovableEventListFragmentInitialize(MovableEventListFragment fragment);
+    }
+
+    @Override
+    public void recyclerViewListClicked(View v, Event eventClicked) {
+        Intent intent = new Intent(v.getContext(), EditMovableEventActivity.class);
+        intent.putExtra("event", eventClicked);
+        startActivityForResult(intent, EDIT_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            System.out.println("in edit request code");
+
+            ArrayList<Event> events = ((MainActivity) getActivity()).getEvents();
+
+            MovableEvent e = data.getParcelableExtra("event");
+            int prevEventHashCode = data.getIntExtra("prevEventHashCode", -1);
+
+            ArrayList<Event> temp = new ArrayList<>();
+            for (Event tempEvent : events) {
+                if (tempEvent.hashCode() != prevEventHashCode) {
+                    temp.add(tempEvent);
+                } else
+                    System.out.println("hit hash");
+            }
+            temp.add(e);
+
+            events = ScheduleAlgorithm.algorithm(temp);
+            notifyAdapter(events);
+
+            ((MainActivity) getActivity()).setEvents(events);
+        }
     }
 }

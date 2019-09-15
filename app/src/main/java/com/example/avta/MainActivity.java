@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity
 
     private static final int ADD_SET_EVENT_ACTIVITY_REQUEST_CODE = 0;
     private static final int ADD_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE = 1;
+    private static final int EDIT_SET_EVENT_ACTIVITY_REQUEST_CODE = 2;
+    private static final int EDIT_MOVABLE_EVENT_ACTIVITY_REQUEST_CODE = 3;
 
     private ArrayList<Event> events;
     private SetEventListFragment setEventListFragment;
@@ -86,6 +88,10 @@ public class MainActivity extends AppCompatActivity
         return events;
     }
 
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
+    }
+
     public void onSetEventListFragmentInitialize(SetEventListFragment fragment) {
         setEventListFragment = fragment;
     }
@@ -115,6 +121,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("in onActivityResult");
+        System.out.println(requestCode);
+        System.out.println(resultCode);
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ADD_SET_EVENT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {

@@ -2,6 +2,7 @@ package com.example.avta;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class MovableEventAdapter extends RecyclerView.Adapter<MovableEventAdapter.EventViewHolder>{
-    class EventViewHolder extends RecyclerView.ViewHolder {
+    class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        Event event;
         TextView textViewHeading;
         TextView textViewDescription;
         TextView textViewTime;
@@ -26,6 +28,13 @@ public class MovableEventAdapter extends RecyclerView.Adapter<MovableEventAdapte
             textViewHeading = itemView.findViewById(R.id.textViewHeading);
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
             textViewTime = itemView.findViewById(R.id.textViewTime);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            clickListener.recyclerViewListClicked(v, event);
         }
     }
 
@@ -33,10 +42,12 @@ public class MovableEventAdapter extends RecyclerView.Adapter<MovableEventAdapte
     private Context context;
     private Event recentlyDeletedItem;
     private int recentlyDeletedItemPosition;
+    private RecyclerViewClickListener clickListener;
 
-    public MovableEventAdapter(ArrayList<Event> events, Context context) {
+    public MovableEventAdapter(ArrayList<Event> events, Context context, RecyclerViewClickListener clickListener) {
         this.events = events;
         this.context = context;
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -55,6 +66,7 @@ public class MovableEventAdapter extends RecyclerView.Adapter<MovableEventAdapte
         }
 
         Event listItem = events.get(position);
+        holder.event = listItem;
 
         holder.itemView.setVisibility(View.VISIBLE);
         holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));

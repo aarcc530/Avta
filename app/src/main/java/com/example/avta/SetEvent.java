@@ -5,7 +5,7 @@ import android.os.Parcelable;
 import java.time.LocalDateTime;
 import java.time.Duration;
 
-class SetEvent extends Event implements Parcelable {
+public class SetEvent extends Event implements Parcelable {
     SetEvent (String name, String subject, LocalDateTime start, LocalDateTime end) {
         super(name, Duration.between(start, end).toMinutes(), subject, start, end);
     }
